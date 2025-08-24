@@ -4,7 +4,32 @@ import pandas as pd
 import io
 
 # --- App Title and Description ---
-st.set_page_config(page_title="Simplified Data Processor", layout="wide")
+# --- Icon SVG Code ---
+# This is your custom icon design converted to a special format
+page_icon_svg = """
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 55" width="130" height="55">
+        <defs>
+            <linearGradient id="grad1" x1="100%" y1="0%" x2="0%" y2="0%">
+                <stop offset="0%" style="stop-color:#9426e9;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#f50035;stop-opacity:1" />
+            </linearGradient>
+        </defs>
+        <style>
+            .gst-text { font-family: 'Inter', sans-serif; font-size: 48px; font-weight: 800; fill: white; letter-spacing: -2px; }
+            .pro-text { font-family: 'Inter', sans-serif; font-size: 36px; font-weight: 700; fill: white; letter-spacing: -1.5px; }
+        </style>
+        <text x="0" y="45" class="gst-text">GST</text>
+        <rect x="80" y="5" width="50" height="45" rx="4" fill="url(#grad1)" />
+        <text x="83" y="40" class="pro-text">PRO</text>
+    </svg>
+"""
+
+# --- App Title and Icon Configuration ---
+st.set_page_config(
+    page_title="GST PRO",
+    page_icon=page_icon_svg,
+    layout="wide"
+)
 st.title("📄 Simplified Purchase & Sales Processor")
 st.write("Upload your Purchase and Sales files below. The app will extract the required data and generate a single Excel file with two sheets.")
 
@@ -125,3 +150,4 @@ if st.button("🚀 Process Files and Generate Excel", type="primary"):
             st.error("Processing failed. Please review the errors above.")
     else:
         st.warning("⚠️ Please upload both the Purchase and Sales files before processing.")
+
