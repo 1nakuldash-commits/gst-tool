@@ -1,4 +1,3 @@
-
 import streamlit as st
 import pandas as pd
 import io
@@ -52,15 +51,17 @@ def load_data(uploaded_file):
 def process_file(df, file_type):
     """
     This function processes a single DataFrame (either Purchase or Sales)
-    and returns a cleaned DataFrame with the required 5 columns.
+    and returns a cleaned DataFrame with the required 6 columns.
     """
     if df is None:
         return None
 
     # --- 1. Smart Column Detection ---
     # Define possible column names for different report types
+    # ADDED 'Invoice No' to the map with possible names
     col_map = {
         'Date': ['Invoice Date', 'Invoice date'],
+        'Invoice No': ['Invoice No.', 'Invoice Number', 'Voucher No.'], # New entry for Invoice Number
         'Party Name': ['Party Name', 'Receiver Name'],
         'Taxable Amount': ['Taxable value', 'Taxable Value'],
         'GST Rate': ['Rate']
@@ -78,9 +79,11 @@ def process_file(df, file_type):
         found_cols[standard_name] = found_name
 
     # --- 2. Data Extraction and Cleaning ---
-    # Extract only the necessary columns using the found names
+    # Extract only the necessary columns using the found names in the correct order
+    # ADDED 'Invoice No' to the extraction list
     extracted_df = df[[
         found_cols['Date'],
+        found_cols['Invoice No'], # New field added here
         found_cols['Party Name'],
         found_cols['Taxable Amount'],
         found_cols['GST Rate']
@@ -91,8 +94,10 @@ def process_file(df, file_type):
     
     # --- 3. Final Formatting ---
     # Rename columns to the final desired standard names
+    # ADDED 'Invoice No' to the rename mapping
     final_df = extracted_df.rename(columns={
         found_cols['Date']: 'Date',
+        found_cols['Invoice No']: 'Invoice No', # New field renamed here
         found_cols['Party Name']: 'Party Name',
         found_cols['Taxable Amount']: 'Taxable Amount',
         found_cols['GST Rate']: 'GST Rate'
@@ -150,4 +155,3 @@ if st.button("🚀 Process Files and Generate Excel", type="primary"):
             st.error("Processing failed. Please review the errors above.")
     else:
         st.warning("⚠️ Please upload both the Purchase and Sales files before processing.")
-
